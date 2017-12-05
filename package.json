@@ -1,0 +1,14 @@
+{
+  "name": "flip-a-coin",
+  "version": "1.0.0",
+  "description": "make an informed decision",
+  "main": "index.js",
+  "repository": "https://github.com/johnpwood/flip-a-coin.git",
+  "author": "John Wood <johnpwoodiv@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "babel-preset-env": "1.5.2",
+    "babel-preset-react": "6.24.1"
+  }
+}
