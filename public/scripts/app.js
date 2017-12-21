@@ -8,43 +8,24 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Counter = function (_React$Component) {
-  _inherits(Counter, _React$Component);
+var VisibilityToggle = function (_React$Component) {
+  _inherits(VisibilityToggle, _React$Component);
 
-  function Counter(props) {
-    _classCallCheck(this, Counter);
+  function VisibilityToggle() {
+    _classCallCheck(this, VisibilityToggle);
 
-    var _this = _possibleConstructorReturn(this, (Counter.__proto__ || Object.getPrototypeOf(Counter)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (VisibilityToggle.__proto__ || Object.getPrototypeOf(VisibilityToggle)).call(this));
 
-    _this.increment = _this.increment.bind(_this);
-    _this.decrement = _this.decrement.bind(_this);
-    _this.reset = _this.reset.bind(_this);
-    _this.state = { count: 0 };
+    _this.state = { visible: false };
+    _this.toggle = _this.toggle.bind(_this);
     return _this;
   }
 
-  _createClass(Counter, [{
-    key: 'increment',
-    value: function increment() {
-      // Because this.props and this.state may be updated asynchronously,
-      // you should not rely on their values for calculating the next state.
-      //    this.setState({ count: this.state.count+1 });
+  _createClass(VisibilityToggle, [{
+    key: 'toggle',
+    value: function toggle() {
       this.setState(function (p) {
-        return { count: p.count + 1 };
-      });
-    }
-  }, {
-    key: 'decrement',
-    value: function decrement() {
-      this.setState(function (p) {
-        return { count: p.count - 1 };
-      });
-    }
-  }, {
-    key: 'reset',
-    value: function reset() {
-      this.setState(function (p) {
-        return { count: 0 };
+        return { visible: !p.visible };
       });
     }
   }, {
@@ -54,32 +35,29 @@ var Counter = function (_React$Component) {
         'div',
         null,
         React.createElement(
-          'h1',
+          'button',
+          { onClick: this.toggle },
+          this.state.visible ? 'Hide Details' : 'Show Details'
+        ),
+        this.state.visible ? React.createElement(
+          'p',
           null,
-          'Count: ',
-          this.state.count,
-          ' '
-        ),
-        React.createElement(
-          'button',
-          { onClick: this.increment },
-          '+1'
-        ),
-        React.createElement(
-          'button',
-          { onClick: this.decrement },
-          '-1'
-        ),
-        React.createElement(
-          'button',
-          { onClick: this.reset },
-          'reset'
-        )
+          'These are the details'
+        ) : ''
       );
     }
   }]);
 
-  return Counter;
+  return VisibilityToggle;
 }(React.Component);
 
-ReactDOM.render(React.createElement(Counter, null), document.getElementById('app'));
+ReactDOM.render(React.createElement(
+  'div',
+  null,
+  React.createElement(
+    'h1',
+    null,
+    'There are some hidden details in this page.'
+  ),
+  React.createElement(VisibilityToggle, null)
+), document.getElementById('app'));
