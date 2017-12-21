@@ -1,10 +1,12 @@
 class IndecisionApp extends React.Component {
   render() {
+    const options = ['first thing', 'second thing', 'third thing'];
     return (
       <div>
-        <Header />
+        <Header title = 'Indecision'
+                subtitle = 'Put your life in the hands of a computer!' />
         <Action/>
-        <Options/>
+        <Options options={options} />
         <AddOption/>
       </div>
     )
@@ -15,7 +17,7 @@ class Header extends React.Component {
   render() {
     return (
       <div>
-        <h1>Indecision</h1>
+        <h1>{this.props.title}</h1>
         <h2>Put your life in the hands of a computer!</h2>
       </div>
     );
@@ -23,23 +25,35 @@ class Header extends React.Component {
 }
 
 class Action extends React.Component {
+  handlePick() {
+    alert('clicked');
+  }
   render() {
     return (
       <div>
-        <button>What should I do?</button>
+        <button onClick={this.handlePick}>What should I do?</button>
       </div>
     );
   }
 }
 
 class Options extends React.Component {
+  constructor(props){
+    super(props);
+    this.removeAll = this.handleRemoveAll.bind(this);
+  }
+  removeAll() {
+    this.props.options = [];
+  }
   render() {
     return (
       <div>
+        <button onClick={this.removeAll.bind}>Remove All</button>
+        <p>number of options: {this.props.options.length}</p>
         <ul>
-          <li><Option/></li>
-          <li><Option/></li>
-        </ul>
+          {this.props.options.map((x,i) => <Option key={i} optionText={x} />)}
+      </ul>
+        
       </div>
     );
   }
@@ -49,19 +63,25 @@ class Option extends React.Component {
   render() {
     return (
       <div>
-        This will be an option.
+        {this.props.optionText}
       </div>
     );
   }
 }
 
 class AddOption extends React.Component {
+  sub(e) {
+    e.preventDefault();
+    const option = e.target.elements.newOption.value.trim();
+    if (option){ alert(option); }
+  }
   render() {
     return (
-      <div>
-        <input/>
+      
+      <form onSubmit={this.sub}>
+        <input name="newOption" />
         <button>Add Option</button>
-      </div>
+      </form>
     )
   }
 }
