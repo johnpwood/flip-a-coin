@@ -1,69 +1,69 @@
-
-// console.log('App.js has loaded.');
-
-// const template = <div><h1>Informed Decision</h1><p>App info</p></div>;
-
-const app = {
-  title: 'Informed Decision',
-  subtitle: "You've informed yourself, but you still need help making a decision",
-  loc: 'here',
-  options: [],
-};
-
-const onMakeDecision = () => {
-  const randomNum = Math.floor(Math.random() * app.options.length);
-  const option = app.options[randomNum];
-  alert(option);
-  console.log(randomNum);
-};
-
-const renderThisThing = () => {
-  const template = (
-    <div>
-      <h1>{app.title}</h1>
-      <p>{true && app.subtitle}</p>
-      <p>Location: {app.loc || 'no location'}</p>
-      <p>{app.options.length >= 2 ?
-          'Here are your options:' :
-        'Not enough options.'}
-      </p>
-      <ol>
-        {app.options.map((x, i) => <li key={i}> { x } </li>)}
-      </ol>
-      <form onSubmit={submitOption}>
-        <input type="text" name="option" />
-        <button>Add Option</button>
-      </form>
-      <button disabled={app.options.length===0}
-    onClick={onMakeDecision}>
-      What should I do?
-      </button>
-      <button onClick={removeAll}>Remove All</button>
+class IndecisionApp extends React.Component {
+  render() {
+    return (
+      <div>
+        <Header />
+        <Action/>
+        <Options/>
+        <AddOption/>
       </div>
-  );
-  ReactDOM.render(template, document.getElementById('app'));
+    )
+  }
+}
+      
+class Header extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Indecision</h1>
+        <h2>Put your life in the hands of a computer!</h2>
+      </div>
+    );
+  }
 }
 
-const submitOption = (e) => {
-  e.preventDefault();
-  const option = e.target.elements.option.value;
-  if (option) {
-    app.options.push(option);
-    e.target.elements.option.value = '';
+class Action extends React.Component {
+  render() {
+    return (
+      <div>
+        <button>What should I do?</button>
+      </div>
+    );
   }
-  renderThisThing();
-};
+}
 
-const removeAll = (e) => {
-  e.preventDefault();
-  app.options = [];
-  renderThisThing();
-};
+class Options extends React.Component {
+  render() {
+    return (
+      <div>
+        <ul>
+          <li><Option/></li>
+          <li><Option/></li>
+        </ul>
+      </div>
+    );
+  }
+}
 
+class Option extends React.Component {
+  render() {
+    return (
+      <div>
+        This will be an option.
+      </div>
+    );
+  }
+}
 
+class AddOption extends React.Component {
+  render() {
+    return (
+      <div>
+        <input/>
+        <button>Add Option</button>
+      </div>
+    )
+  }
+}
 
-
-const appRoot = document.getElementById('app');
-
-// ReactDOM.render(template, appRoot);
-renderThisThing();
+ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
