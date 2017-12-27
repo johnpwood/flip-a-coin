@@ -2,25 +2,39 @@ class IndecisionApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: []
+      options: props.options
     };
     this.removeOptions = this.removeOptions.bind(this);
+    this.removeOption = this.removeOption.bind(this);
     this.pick = this.pick.bind(this);
     this.addOption = this.addOption.bind(this);
   }
-  removeOptions(){
-    this.setState((p) => {
-      return { options: [] };
-    });
+  
+  removeOptions() {
+    this.setState(() => ({ options: [] }));
+  }
+  removeOption(option) {
+    this.setState(p => ({ options: p.options.filter(x => x !== option) }));
   }
   pick() {
     alert(this.state.options[Math.floor(Math.random()*this.state.options.length)]);
   }
   addOption(option) {
     if (!option) { return 'Enter an option first!'; }
-    this.setState((p) => {
-      return { options: p.options.concat([option]) };
-    })
+    this.setState(p => ({ options: p.options.concat([option]) }));
+  }
+  componentDidMount() {
+    try {
+      const json = localStorage.getItem('options');
+      const options = JSON.parse(json);
+      if(options) {this.setState(() => ({"options": JSON.parse(json)}));}
+    }
+    catch(e) {
+    }
+  }
+  componentDidUpdate(p){
+    const json = JSON.stringify(this.state.options);
+    localStorage.setItem('options', json);   
   }
     render() {
     return (
@@ -32,13 +46,18 @@ class IndecisionApp extends React.Component {
           pick={this.pick}
         />
           <Options options={this.state.options}
-                   removeOptions={this.removeOptions} />
+                   removeOptions={this.removeOptions}
+                   removeOption={this.removeOption} />
           <AddOption addOption={this.addOption} />
       </div>
     )
   }
 }
-      
+
+IndecisionApp.defaultProps = {
+  options: []
+};
+
 const Header = (props) => {
   return (
     <div>
@@ -46,6 +65,10 @@ const Header = (props) => {
       <h2>Put your life in the hands of a computer!</h2>
     </div>
   );
+};
+
+Header.defaultProps = {
+  title: 'Default Title'
 };
 
 const Action = (props) => {
@@ -63,21 +86,27 @@ const Options = (props) => {
     <div>
       <button onClick={props.removeOptions}>Remove All</button>
       <p>number of options: {props.options.length}</p>
+      {props.options.length === 0 && <p>Please add an option to get started!</p>}
       <ul>
-        {props.options.map((x,i) => <Option key={i} optionText={x} />)}
+        {props.options.map((x,i) => (
+          <Option key={i}
+                  optionText={x}
+                  removeOption={props.removeOption}
+                  />)
+        )}
     </ul>
       </div>
   );
-}
-
+};
 
 const Option = (props) => {
   return (
     <div>
       {props.optionText}
+      <button onClick={(e)=>{props.removeOption(props.optionText)}}>remove</button>
     </div>
   );
-}
+};
 
 class AddOption extends React.Component {
   constructor(props) {
@@ -89,9 +118,8 @@ class AddOption extends React.Component {
     e.preventDefault();
     const option = e.target.elements.newOption.value.trim();
     const error = this.props.addOption(option);
-    this.setState(() => {
-      return { error };
-    });
+    this.setState(() => ({ error }));
+    if(!error) { e.target.elements.option.value = ''; }
   }
   render() {
     return (
