@@ -3,6 +3,7 @@ import AddOption from './AddOption';
 import Options from './Options';
 import Action from './Action';
 import Header from './Header';
+import OptionModal from './OptionModal';
 
 class IndecisionApp extends React.Component {
   state = { options: this.props.options };
@@ -10,7 +11,9 @@ class IndecisionApp extends React.Component {
     this.setState(() => ({ options: [] }));
   };
   pick = () => {
-    alert(this.state.options[Math.floor(Math.random()*this.state.options.length)]);
+    const selectedOption =
+          this.state.options[Math.floor(Math.random()*this.state.options.length)];
+    this.setState(() => ({ selectedOption }));
   };
   addOption = option => {
     if (!option) { return 'Enter an option first!'; }
@@ -22,6 +25,9 @@ class IndecisionApp extends React.Component {
   };
   removeOption = option => {
     this.setState(p => ({ options: p.options.filter(x => x !== option) }));
+  };
+  closeModal = () => {
+    this.setState(p => ({ selectedOption: undefined }));
   };
   componentDidMount() {
     try {
@@ -48,7 +54,12 @@ class IndecisionApp extends React.Component {
           <Options options={this.state.options}
                    removeOptions={this.removeOptions}
                    removeOption={this.removeOption} />
-          <AddOption addOption={this.addOption} />
+          <AddOption
+            addOption={this.addOption} />
+          <OptionModal
+            selectedOption={this.state.selectedOption}
+            closeModal={this.closeModal}
+            />
       </div>
     )
   }
