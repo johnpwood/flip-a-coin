@@ -5,33 +5,24 @@ import Action from './Action';
 import Header from './Header';
 
 class IndecisionApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      options: props.options
-    };
-    this.removeOptions = this.removeOptions.bind(this);
-    this.removeOption = this.removeOption.bind(this);
-    this.pick = this.pick.bind(this);
-    this.addOption = this.addOption.bind(this);
-  }
-
-  removeOptions() {
+  state = { options: this.props.options };
+  removeOptions = () => {
     this.setState(() => ({ options: [] }));
-  }
-  removeOption(option) {
-    this.setState(p => ({ options: p.options.filter(x => x !== option) }));
-  }
-  pick() {
+  };
+  pick = () => {
     alert(this.state.options[Math.floor(Math.random()*this.state.options.length)]);
-  }
-  addOption(option) {
+  };
+  addOption = option => {
     if (!option) { return 'Enter an option first!'; }
     if (!(this.state.options.filter(x => x === option).length === 0)) {
       return 'This option already exists.  Please enter a unique new option.';
     }
     this.setState(p => ({ options: p.options.concat([option]) }));
-  }
+    return undefined;
+  };
+  removeOption = option => {
+    this.setState(p => ({ options: p.options.filter(x => x !== option) }));
+  };
   componentDidMount() {
     try {
       const json = localStorage.getItem('options');
