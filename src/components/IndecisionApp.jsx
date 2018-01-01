@@ -45,8 +45,8 @@ class IndecisionApp extends React.Component {
     render() {
       return (
         <div>
-          <Header title = 'Indecision'
-                  subtitle = 'Put your life in the hands of a computer!'
+          <Header title = 'Informed Decision'
+                  subtitle = 'Use a computer instead of flipping a coin-- no one carries coins in 2018!'
                   />
           <div className="container">
             <Action hasOptions={this.state.options.length > 0}
