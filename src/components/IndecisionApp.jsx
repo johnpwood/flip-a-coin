@@ -43,20 +43,22 @@ class IndecisionApp extends React.Component {
     localStorage.setItem('options', json);   
   }
     render() {
-    return (
-      <div className="container">
-        <Header title = 'Indecision'
-                subtitle = 'Put your life in the hands of a computer!'
-                />
+      return (
         <div>
-          <Action hasOptions={this.state.options.length > 0}
-            pick={this.pick}
-            />
-            <Options options={this.state.options}
-                     removeOptions={this.removeOptions}
-                     removeOption={this.removeOption} />
-            <AddOption
-              addOption={this.addOption} />
+          <Header title = 'Indecision'
+                  subtitle = 'Put your life in the hands of a computer!'
+                  />
+          <div className="container">
+            <Action hasOptions={this.state.options.length > 0}
+              pick={this.pick}
+              />
+              <div className="widget">
+                <Options options={this.state.options}
+                         removeOptions={this.removeOptions}
+                         removeOption={this.removeOption} />
+                <AddOption
+                  addOption={this.addOption} />
+              </div>
         </div>
         <OptionModal
           selectedOption={this.state.selectedOption}
